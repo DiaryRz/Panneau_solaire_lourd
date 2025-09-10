@@ -1,0 +1,1 @@
+# Panneau_solaire_lourd
