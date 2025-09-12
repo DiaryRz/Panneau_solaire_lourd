@@ -4,6 +4,7 @@ from accueil import create_accueil
 from page_stat import create_stat
 from variable import color
 from page_ajout import create_page_ajout
+from page_modifier import create_page_modifier
 
 class MainContent(tk.Frame):
     def __init__(self, parent):
@@ -28,6 +29,7 @@ class MainContent(tk.Frame):
             "accueil": self.create_accueil_wrapper,
             "statistiques": self.create_stat_wrapper,
             "ajout": self.create_ajout_wrapper,
+            "modifier": self.create_modifier_wrapper,
         }
 
         # Redimensionnement
@@ -44,18 +46,24 @@ class MainContent(tk.Frame):
         height = max(200, root.winfo_height() - 40)
         self.content_container.configure(width=width, height=height)
 
+    def rafraichir_accueil(self):
+        """Force le rafraîchissement de la page d'accueil"""
+        if "accueil" in self.pages:
+            self.pages["accueil"].destroy()
+            del self.pages["accueil"]
+        self.show_page("accueil")
+
+
     # Wrappers
     def create_accueil_wrapper(self, parent):
         return create_accueil(parent, self.show_page)
 
-    def create_ajout_wrapper(self, parent):
-        def rafraichir_accueil():
-            if "accueil" in self.pages:
-                self.pages["accueil"].destroy()
-                del self.pages["accueil"]
-                self.show_page("accueil")
+    def create_modifier_wrapper(self, parent, section=None, produit=None):
+        return create_page_modifier(parent, self.show_page, self.rafraichir_accueil, section, produit)
 
-        return create_page_ajout(parent, self.show_page, rafraichir_accueil)
+
+    def create_ajout_wrapper(self, parent):
+        return create_page_ajout(parent, self.show_page, self.rafraichir_accueil)
 
     def create_stat_wrapper(self, parent):
         """Wrapper pour la page de statistiques responsive"""
@@ -69,23 +77,27 @@ class MainContent(tk.Frame):
 
 
     # Gestion des pages
-    def show_page(self, page_name):
+    def show_page(self, page_name, **kwargs):
         if page_name not in self.page_creators:
             print(f"Erreur: Page '{page_name}' non trouvée!")
             return
 
-        # Cacher page actuelle
+        # Cacher la page actuelle
         if self.current_page:
             self.current_page.pack_forget()
 
-        # Créer la page si besoin
-        if page_name not in self.pages:
-            self.pages[page_name] = self.page_creators[page_name](self.content_container)
+        # Recréer la page si besoin
+        if page_name not in self.pages or kwargs:
+            if page_name in self.pages:
+                self.pages[page_name].destroy()
+                del self.pages[page_name]
+            self.pages[page_name] = self.page_creators[page_name](self.content_container, **kwargs)
 
         # Afficher
         page = self.pages[page_name]
         page.pack(expand=True, fill="both")
         self.current_page = page
+
 
     def refresh_page(self, page_name):
         """Recrée et affiche une page existante"""

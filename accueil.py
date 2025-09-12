@@ -91,7 +91,10 @@ def create_accueil(parent, switch_page):
         rafraichir_sections()
 
     def modifier_item(section, ref_produit):
-        print(f"Modifier le produit {ref_produit} dans {section}")
+        produit = next((item for item in data[section] if item["ref_produit"] == ref_produit), None)
+        if produit:
+            switch_page("modifier", section=section, produit=produit)
+
 
     def add_hover_effect(widget, hover_color, original_bg):
         def on_enter(event): 
