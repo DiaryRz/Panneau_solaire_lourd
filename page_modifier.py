@@ -18,29 +18,26 @@ def create_page_modifier(parent, switch_page, rafraichir_accueil, section, produ
     form_frame = tk.Frame(page_modifier, bg=color.get("accueil"))
     form_frame.pack(pady=20)
 
-    # Nom
-    tk.Label(form_frame, text="Nom :", font=("Segoe UI", 12), bg=color.get("accueil"), fg="white").grid(row=0, column=0, sticky="w", pady=5, padx=10)
-    entry_nom = tk.Entry(form_frame, font=("Segoe UI", 12))
-    entry_nom.grid(row=0, column=1, pady=5, padx=10)
-    entry_nom.insert(0, produit["nom"])
+    def create_field(label_text, value="", row=0):
+        tk.Label(form_frame, text=label_text, font=("Segoe UI", 12), bg=color.get("accueil"), fg="white")\
+            .grid(row=row, column=0, sticky="w", pady=5, padx=10)
+        entry = tk.Entry(form_frame, font=("Segoe UI", 12))
+        entry.grid(row=row, column=1, pady=5, padx=10)
+        entry.insert(0, value)
+        return entry
 
-    # Référence (non modifiable)
-    tk.Label(form_frame, text="Référence :", font=("Segoe UI", 12), bg=color.get("accueil"), fg="white").grid(row=1, column=0, sticky="w", pady=5, padx=10)
-    entry_ref = tk.Entry(form_frame, font=("Segoe UI", 12), state="readonly")
-    entry_ref.grid(row=1, column=1, pady=5, padx=10)
-    entry_ref.insert(0, produit["ref_produit"])
+    # Champs
+    entry_nom = create_field("Nom :", produit.get("nom", ""), 0)
+    entry_ref = create_field("Référence :", produit.get("ref_produit", ""), 1)
+    entry_ref.configure(state="readonly")
+    entry_prix = create_field("Prix (Ariary):", produit.get("prix", ""), 2)
+    entry_date = create_field("Date de création :", produit.get("date_creation", ""), 3)
+    entry_date.configure(state="readonly")
 
-    # Prix
-    tk.Label(form_frame, text="Prix (Ariary):", font=("Segoe UI", 12), bg=color.get("accueil"), fg="white").grid(row=2, column=0, sticky="w", pady=5, padx=10)
-    entry_prix = tk.Entry(form_frame, font=("Segoe UI", 12))
-    entry_prix.grid(row=2, column=1, pady=5, padx=10)
-    entry_prix.insert(0, produit["prix"])
-
-    # Date création (non modifiable)
-    tk.Label(form_frame, text="Date de création :", font=("Segoe UI", 12), bg=color.get("accueil"), fg="white").grid(row=3, column=0, sticky="w", pady=5, padx=10)
-    entry_date = tk.Entry(form_frame, font=("Segoe UI", 12), state="readonly")
-    entry_date.grid(row=3, column=1, pady=5, padx=10)
-    entry_date.insert(0, produit["date_creation"])
+    # Nouveaux champs
+    entry_couleur = create_field("Couleur :", produit.get("couleur", ""), 4)
+    entry_puissance = create_field("Puissance :", produit.get("puissance", ""), 5)
+    entry_longueur = create_field("Longueur :", produit.get("longueur", ""), 6)
 
     # Boutons
     btn_frame = tk.Frame(page_modifier, bg=color.get("accueil"))
@@ -49,6 +46,9 @@ def create_page_modifier(parent, switch_page, rafraichir_accueil, section, produ
     def enregistrer_modification():
         produit["nom"] = entry_nom.get()
         produit["prix"] = entry_prix.get()
+        produit["couleur"] = entry_couleur.get()
+        produit["puissance"] = entry_puissance.get()
+        produit["longueur"] = entry_longueur.get()
         # retour accueil
         rafraichir_accueil()
         switch_page("accueil")
