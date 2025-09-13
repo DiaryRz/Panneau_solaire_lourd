@@ -195,12 +195,15 @@ def create_accueil(parent, switch_page):
             products_container.pack(fill="x", pady=(0,10))
 
             page = current_pages[section]
+            # Inverser la liste pour afficher le dernier ajouté en premier
+            items_reversed = list(reversed(items))
             start = page*ITEMS_PER_PAGE
             end = start+ITEMS_PER_PAGE
-            paginated_items = items[start:end]
+            paginated_items = items_reversed[start:end]
 
             for item in paginated_items:
                 create_product_card(products_container, section, item)
+
 
             if len(items) > ITEMS_PER_PAGE:
                 pagination_frame = tk.Frame(sections_frame, bg=color.get("accueil"))
