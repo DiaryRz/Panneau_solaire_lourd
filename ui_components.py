@@ -5,6 +5,7 @@ from page_stat import create_stat
 from variable import color
 from page_ajout import create_page_ajout
 from page_modifier import create_page_modifier
+from page_profil import create_page_profil
 
 class MainContent(tk.Frame):
     def __init__(self, parent):
@@ -30,6 +31,7 @@ class MainContent(tk.Frame):
             "statistiques": self.create_stat_wrapper,
             "ajout": self.create_ajout_wrapper,
             "modifier": self.create_modifier_wrapper,
+            "profil": self.create_profil_wrapper,
         }
 
         # Redimensionnement
@@ -57,6 +59,9 @@ class MainContent(tk.Frame):
     # Wrappers
     def create_accueil_wrapper(self, parent):
         return create_accueil(parent, self.show_page)
+
+    def create_profil_wrapper(self, parent):    
+        return create_page_profil(parent, self.show_page, self.rafraichir_accueil)
 
     def create_modifier_wrapper(self, parent, section=None, produit=None):
         return create_page_modifier(parent, self.show_page, self.rafraichir_accueil, section, produit)

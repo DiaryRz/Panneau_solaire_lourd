@@ -129,12 +129,12 @@ def create_accueil(parent, switch_page):
         ).pack(anchor="w", pady=(0,2))
 
         tk.Label(
-            info_frame, text=f"Prix: {item['prix']} €",
+            info_frame, text=f"Prix: {item['prix']} Ariary",
             font=("Segoe UI", 12, "bold"), bg="#2d3748", fg="#48bb78", anchor="w"
         ).pack(anchor="w", pady=(0,2))
 
         tk.Label(
-            info_frame, text=f"Créé le: {item['date_creation']}",
+            info_frame, text=f"{item['stock']} en stock ",
             font=("Segoe UI", 9), bg="#2d3748", fg="#718096", anchor="w"
         ).pack(anchor="w")
 

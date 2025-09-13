@@ -44,7 +44,7 @@ def create_page_ajout(parent, switch_page, rafraichir_accueil):
     # Champs
     combo_categorie = create_field(card_frame_inner, "Catégorie :", widget_type="combo", values=list(data.keys()))
     entry_nom = create_field(card_frame_inner, "Nom :")
-    entry_prix = create_field(card_frame_inner, "Prix (€) :")
+    entry_prix = create_field(card_frame_inner, "Prix (Ariary) :")
     entry_stock = create_field(card_frame_inner, "Stock :")
 
     # ====== Bouton Valider ======

@@ -6,7 +6,7 @@ from sidebar import Sidebar
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Panneau solaire")
+        self.title("Solar App")
         self.geometry("800x600")
         self.minsize(600, 400)
 

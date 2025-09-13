@@ -31,7 +31,7 @@ def create_page_modifier(parent, switch_page, rafraichir_accueil, section, produ
     entry_ref.insert(0, produit["ref_produit"])
 
     # Prix
-    tk.Label(form_frame, text="Prix (€):", font=("Segoe UI", 12), bg=color.get("accueil"), fg="white").grid(row=2, column=0, sticky="w", pady=5, padx=10)
+    tk.Label(form_frame, text="Prix (Ariary):", font=("Segoe UI", 12), bg=color.get("accueil"), fg="white").grid(row=2, column=0, sticky="w", pady=5, padx=10)
     entry_prix = tk.Entry(form_frame, font=("Segoe UI", 12))
     entry_prix.grid(row=2, column=1, pady=5, padx=10)
     entry_prix.insert(0, produit["prix"])

@@ -72,9 +72,9 @@ def create_kpi_cards(parent):
     kpi_frame.pack(fill="x", pady=(0, 20))
     
     kpis = [
-        {"title": "Chiffre d'affaires", "value": "€45,678", "change": "+12.5%", "icon": "💰"},
-        {"title": "Nombre de clients", "value": "1,234", "change": "+8.2%", "icon": "👥"},
-        {"title": "Ventes totales", "value": "€78,901", "change": "+15.3%", "icon": "📈"}
+        {"title": "Chiffre d'affaires", "value": "Ar 80 000 000 ", "change": "+10.5%", "icon": "💰"},
+        {"title": "Nombre de clients", "value": "8", "change": "+2.2%", "icon": "👥"},
+        {"title": "Ventes totales", "value": "Ar 70 200 000", "change": "+11.3%", "icon": "📈"}
     ]
     
     for i, kpi in enumerate(kpis):
@@ -142,8 +142,9 @@ def create_revenue_chart(parent):
     title_label.pack(pady=(15, 10))
     
     # Données
-    produits = ["Produit A", "Produit B", "Produit C", "Produit D", "Produit E"]
-    revenus = [25000, 18000, 32000, 15000, 22000]
+    produits = ["Batterie 100Ah","Batterie 50Ah","Batterie 200Ah","Panneau 250W","Panneau 50W","Panneau 300W","Panneau 400W"]
+    revenus = [1500000,700000,4200000,4250000,2000000,4500000,26600000]
+
     
     # Graphique
     fig, ax = plt.subplots(figsize=(6, 4), facecolor=color.get("carte_bg", "#2c3e50"))
@@ -165,7 +166,7 @@ def create_revenue_chart(parent):
     for bar in bars:
         height = bar.get_height()
         ax.text(bar.get_x() + bar.get_width()/2., height + 500,
-                f'€{height:,.0f}', ha='center', va='bottom', color='white', fontsize=9)
+                f'Ar{height:,.0f}', ha='center', va='bottom', color='white', fontsize=9)
     
     plt.tight_layout()
     
@@ -191,8 +192,8 @@ def create_top_products_chart(parent):
     title_label.pack(pady=(15, 10))
     
     # Données
-    produits = ["Produit A", "Produit B", "Produit C"]
-    ventes = [450, 380, 320]
+    produits = ["Batterie 100Ah" , "Premium 400W" , "Batterie Gel 200Ah"]
+    ventes = [3, 4, 4]
     colors = ["#e74c3c", "#f39c12", "#f1c40f"]
     
     # Graphique horizontal
@@ -203,7 +204,7 @@ def create_top_products_chart(parent):
     # Style
     ax.set_facecolor(color.get("carte_bg", "#2c3e50"))
     ax.tick_params(axis="x", colors="white")
-    ax.tick_params(axis="y", colors="white")
+    ax.tick_params(axis="y", colors="white", labelsize=9)  # taille police ajustée
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.spines["left"].set_color("white")
@@ -212,16 +213,19 @@ def create_top_products_chart(parent):
     
     # Valeurs sur les barres
     for i, (bar, value) in enumerate(zip(bars, ventes)):
-        ax.text(value + 10, bar.get_y() + bar.get_height()/2,
+        ax.text(value + 0.1, bar.get_y() + bar.get_height()/2,
                 f'{value}', ha='left', va='center', color='white', fontsize=9)
     
+    # Ajuster marges pour bien voir les labels
     plt.tight_layout()
+    fig.subplots_adjust(left=0.35)  # espace à gauche augmenté
     
     # Intégration
     canvas_widget = FigureCanvasTkAgg(fig, master=chart_frame)
     canvas_widget.draw()
     widget = canvas_widget.get_tk_widget()
     widget.pack(fill="both", expand=True, padx=10, pady=(0, 15))
+
 
 def create_clients_evolution_chart(parent):
     """Créer le graphique d'évolution des clients"""
@@ -239,8 +243,9 @@ def create_clients_evolution_chart(parent):
     title_label.pack(pady=(15, 10))
     
     # Données
-    mois = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun"]
-    clients = [100, 120, 140, 135, 160, 180]
+    mois = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Juil", "Août"]
+    clients = [0, 1, 1, 1, 2, 1, 1, 1]
+
     
     # Graphique avec taille compacte
     fig, ax = plt.subplots(figsize=(4.5, 2.5), facecolor=color.get("carte_bg", "#2c3e50"))
@@ -268,39 +273,71 @@ def create_clients_evolution_chart(parent):
     widget.pack(fill="both", expand=True, padx=10, pady=(0, 15))
 
 def create_revenue_distribution_chart(parent):
-    """Créer le graphique de répartition CA/client"""
+    """Créer une liste colorée scrollable de consommation électrique (en Watt)"""
     chart_frame = tk.Frame(parent, bg=color.get("carte_bg", "#2c3e50"), relief="raised", bd=1)
     chart_frame.pack(fill="both", expand=True, padx=5, pady=5)
-    
+
     # Titre
     title_label = tk.Label(
         chart_frame,
-        text="🥧 Répartition CA/Client",
+        text="⚡ Consommation Clients (W)",
         font=("Arial", 12, "bold"),
         bg=color.get("carte_bg", "#2c3e50"),
         fg="white"
     )
     title_label.pack(pady=(15, 10))
-    
-    # Données
-    segments = ["Gros clients", "Clients moyens", "Petits clients", "Nouveaux"]
-    pourcentages = [45, 25, 20, 10]
-    colors = ["#e74c3c", "#f39c12", "#3498db", "#9b59b6"]
-    
-    # Graphique
-    fig, ax = plt.subplots(figsize=(6, 3), facecolor=color.get("carte_bg", "#2c3e50"))
-    
-    wedges, texts, autotexts = ax.pie(pourcentages, labels=segments, colors=colors, 
-                                     autopct='%1.1f%%', startangle=90, 
-                                     textprops={'color': 'white', 'fontsize': 9})
-    
-    # Style
-    ax.set_facecolor(color.get("carte_bg", "#2c3e50"))
-    
-    plt.tight_layout()
-    
-    # Intégration
-    canvas_widget = FigureCanvasTkAgg(fig, master=chart_frame)
-    canvas_widget.draw()
-    widget = canvas_widget.get_tk_widget()
-    widget.pack(fill="both", expand=True, padx=10, pady=(0, 15))
+
+    # Données fictives (nom client + consommation en Watt)
+    clients = [
+        ("Client A", 1200, "#e74c3c"),
+        ("Client B", 950, "#f39c12"),
+        ("Client C", 780, "#3498db"),
+        ("Client D", 500, "#9b59b6"),
+        ("Client E", 300, "#1abc9c"),
+        ("Client F", 220, "#d35400"),
+        ("Client G", 180, "#8e44ad"),
+        ("Client H", 150, "#2ecc71"),
+    ]
+
+    # Canvas + scrollbar
+    canvas = tk.Canvas(chart_frame, bg=color.get("carte_bg", "#2c3e50"), highlightthickness=0)
+    canvas.pack(side="left", fill="both", expand=True)
+    scrollbar = tk.Scrollbar(chart_frame, orient="vertical", command=canvas.yview)
+    scrollbar.pack(side="right", fill="y")
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    # Frame interne scrollable
+    scrollable_frame = tk.Frame(canvas, bg=color.get("carte_bg", "#2c3e50"))
+    window_id = canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+
+    # Adapter la largeur du frame à celle du canvas
+    def resize_scrollable(event):
+        canvas.itemconfig(window_id, width=event.width)
+    canvas.bind("<Configure>", resize_scrollable)
+
+    # Mettre à jour la zone scrollable
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+    )
+
+    # Ajouter chaque client comme une ligne
+    for nom, watt, couleur in clients:
+        item_frame = tk.Frame(scrollable_frame, bg=couleur, padx=10, pady=8)
+        item_frame.pack(fill="x", pady=4)
+
+        tk.Label(
+            item_frame,
+            text=nom,
+            font=("Arial", 10, "bold"),
+            fg="white",
+            bg=couleur
+        ).pack(side="left")
+
+        tk.Label(
+            item_frame,
+            text=f"{watt} W",
+            font=("Arial", 10),
+            fg="white",
+            bg=couleur
+        ).pack(side="right")

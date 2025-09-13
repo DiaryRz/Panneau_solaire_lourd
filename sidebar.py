@@ -24,7 +24,7 @@ class Sidebar(tk.Frame):
         # Logo ou titre de l'application
         title_label = tk.Label(
             header_frame,
-            text="☀️Panneau solaire",
+            text="☀️Solar App",
             font=("Arial", 16, "bold"),
             fg="white",
             bg=color.get("sidebar")
