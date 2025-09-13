@@ -2,6 +2,7 @@ import tkinter as tk
 from variable import color
 from page_ajout import create_page_ajout
 from data import data
+import tkinter.messagebox as messagebox
 
 # Exemple de data par section
 data = data
@@ -87,8 +88,19 @@ def create_accueil(parent, switch_page):
 
     # =================== FONCTIONS ===================
     def supprimer_item(section, ref_produit):
-        data[section] = [item for item in data[section] if item["ref_produit"] != ref_produit]
-        rafraichir_sections()
+        produit = next((item for item in data[section] if item["ref_produit"] == ref_produit), None)
+        if not produit:
+            return
+        
+        # Popup de confirmation
+        reponse = messagebox.askyesno(
+            "Confirmation de suppression",
+            f"Voulez-vous vraiment supprimer le produit '{produit['nom']}' ?"
+        )
+    
+        if reponse:  # Si l'utilisateur clique sur Oui
+            data[section] = [item for item in data[section] if item["ref_produit"] != ref_produit]
+            rafraichir_sections()
 
     def modifier_item(section, ref_produit):
         produit = next((item for item in data[section] if item["ref_produit"] == ref_produit), None)
